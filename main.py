@@ -4,13 +4,12 @@ from mazelib.solve.ShortestPath import ShortestPath # Escolher o algoritimo que 
 
 m = Maze()
 
-m.generator = Wilsons(24,26) # tamanho, maior q 26x26 comeca a ficar meio paia
+m.generator = Wilsons(12,12) # tamanho, maior q 26x26 comeca a ficar meio paia
 m.generate()
-m.generate_entrances()
+m.generate_entrances(num_entrances=5)
 
 m.solver = ShortestPath()
 m.solve()
 
 
-m.animate_movement()
-#print(str(m))
+m.animate()
