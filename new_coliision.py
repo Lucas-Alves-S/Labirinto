@@ -10,43 +10,38 @@ class Collision(MazeSolveAlgo):
         Returns:
             list: solução para o labirinto
         """
-        caminho = []  # Guarda o caminho percorrido até o momento
-        bifurcacoes = {}  # Guarda as bifurcações e direções inexploradas
+        caminho = []
+        bifurcacoes = {}
 
-        # Começa na posição inicial
         atual = self.start
         caminho.append(atual)
         
         while atual != self.end:
-            # Encontrar vizinhos não bloqueados
             vizinhos = self._find_unblocked_neighbors(atual)
             
-            # Remove a célula de onde o rato veio, se possível
             if len(caminho) > 1:
                 ultimo = caminho[-2]
                 if ultimo in vizinhos:
                     vizinhos.remove(ultimo)
 
-            # Se estiver em uma bifurcação com várias direções, armazena-a
+            # guarda bifurcação
             if len(vizinhos) > 1:
                 bifurcacoes[atual] = vizinhos
 
-            # Se houver vizinhos disponíveis, escolhe um e avança
             if vizinhos:
-                proximo = choice(vizinhos)  # Escolhe aleatoriamente entre as opções
+                proximo = choice(vizinhos)
                 caminho.append(proximo)
-                atual = proximo  # Atualiza a posição do rato
+                atual = proximo
             else:
-                # Se não houver vizinhos (beco sem saída), faz o backtrack
+                # Se beco sem saída, volta
                 while caminho and (atual not in bifurcacoes or not bifurcacoes[atual]):
-                    caminho.pop()  # Remove o atual do caminho
+                    caminho.pop()
                     if caminho:
-                        atual = caminho[-1]  # Volta para a última posição com opções
+                        atual = caminho[-1]
 
-                # Recupera as direções inexploradas na última bifurcação
                 if atual in bifurcacoes:
-                    proximo = bifurcacoes[atual].pop()  # Escolhe uma direção inexplorada
+                    proximo = bifurcacoes[atual].pop()
                     caminho.append(proximo)
                     atual = proximo
 
-        return caminho  # Retorna o caminho até o ponto final
+        return caminho
